@@ -6,7 +6,7 @@ A change to any outgoing commit requires a fresh scan. This gate scans committed
 history; it does not certify uncommitted files. It performs no push or PR write.
 
 ```sh
-python3 scripts/secret_gate.py
+python3 scripts/secret_gate.py --remote mtg
 # Explicit non-default PR target or destination tip (fetch it first):
 python3 scripts/secret_gate.py --base origin/release
 # Initial publication, empty remote or orphan history, explicitly:
@@ -69,3 +69,6 @@ GitGuardian App/server-side checks, CI secret scans, Gitleaks, branch protection
 and existing approval controls remain required and unchanged. Local scanning adds
 an earlier gate; it does not replace them. Existing offline CI entry points remain
 offline; local wrappers and agent guidance enforce this additional requirement.
+
+This checkout retains the upstream `origin` remote. For Thomas's maintained
+fork, use the existing `mtg` remote for both base selection and pushes.
