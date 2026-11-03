@@ -8,6 +8,7 @@ edition = "2018"
 
 [features]
 default = []
+quick-support-profile = []
 webrtc = ["dep:webrtc"]
 
 [dependencies]
