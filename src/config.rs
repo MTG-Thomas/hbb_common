@@ -763,6 +763,10 @@ impl Config {
     /// where an attacker can manipulate the environment variable to inject malicious
     /// paths into privileged operations.
     pub fn get_home() -> PathBuf {
+        #[cfg(feature = "quick-support-profile")]
+        if let Some(path) = crate::private_profile::home() {
+            return path;
+        }
         #[cfg(any(target_os = "android", target_os = "ios"))]
         return PathBuf::from(APP_HOME_DIR.read().unwrap().as_str());
         #[cfg(not(any(target_os = "android", target_os = "ios")))]
@@ -778,6 +782,10 @@ impl Config {
     }
 
     pub fn path<P: AsRef<Path>>(p: P) -> PathBuf {
+        #[cfg(feature = "quick-support-profile")]
+        if let Some(path) = crate::private_profile::path(p.as_ref()) {
+            return path;
+        }
         #[cfg(any(target_os = "android", target_os = "ios"))]
         {
             let mut path: PathBuf = APP_DIR.read().unwrap().clone().into();
@@ -810,6 +818,10 @@ impl Config {
     /// See [`Self::get_home()`] for security considerations regarding `$HOME` usage.
     #[allow(unreachable_code)]
     pub fn log_path() -> PathBuf {
+        #[cfg(feature = "quick-support-profile")]
+        if let Some(path) = crate::private_profile::log() {
+            return path;
+        }
         #[cfg(target_os = "macos")]
         {
             if let Some(path) = dirs_next::home_dir().as_mut() {
@@ -840,6 +852,10 @@ impl Config {
     }
 
     pub fn ipc_path(postfix: &str) -> String {
+        #[cfg(feature = "quick-support-profile")]
+        if let Some(path) = crate::private_profile::ipc(postfix) {
+            return path;
+        }
         #[cfg(windows)]
         {
             // \\ServerName\pipe\PipeName
